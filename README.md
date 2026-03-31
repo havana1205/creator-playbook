@@ -21,5 +21,3 @@ vercel.json     # Vercel routing config
 - Fully self-contained single HTML file (CSS inline, logo embedded as base64)
 - No build step needed - pure static deployment
 - Separate from the Growth Playbook app (playbook.packsify.com)
-
--------
