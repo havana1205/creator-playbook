@@ -52,6 +52,7 @@
   --text-muted: #6b7a9e;
   --rule: rgba(129,173,243,0.08);
 }
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Open Sans', sans-serif;
@@ -150,6 +151,63 @@ table tr:hover { background: rgba(129,173,243,0.03); }
 .num-card .num-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 .footer { background: var(--surface3); padding: 28px 56px; text-align: center; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); border-radius: 0 0 20px 20px; }
 .footer img { height: 28px; width: auto; margin-bottom: 8px; display: inline-block; opacity: 0.7; }
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
 /* === RESPONSIVE: Small phones (iPhone SE, Galaxy S8, 320-374px) === */
 @media (max-width: 374px) {
   body { padding: 12px 6px 40px; font-size: 13.5px; }
@@ -179,6 +237,63 @@ table tr:hover { background: rgba(129,173,243,0.03); }
   .footer img { height: 22px; }
 }
 
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
 /* === RESPONSIVE: Standard phones (iPhone 12-16, Pixel, 375-479px) === */
 @media (min-width: 375px) and (max-width: 479px) {
   body { padding: 16px 8px 48px; font-size: 14px; }
@@ -204,6 +319,63 @@ table tr:hover { background: rgba(129,173,243,0.03); }
   .footer { padding: 22px 22px; }
 }
 
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
 /* === RESPONSIVE: Large phones & foldables inner (480-599px) === */
 @media (min-width: 480px) and (max-width: 599px) {
   body { padding: 20px 10px 56px; font-size: 14.5px; }
@@ -221,6 +393,63 @@ table tr:hover { background: rgba(129,173,243,0.03); }
   .footer { padding: 24px 28px; }
 }
 
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
 /* === RESPONSIVE: Small tablets, foldables open (600-767px) === */
 @media (min-width: 600px) and (max-width: 767px) {
   body { padding: 28px 14px 64px; }
@@ -232,12 +461,126 @@ table tr:hover { background: rgba(129,173,243,0.03); }
   .footer { padding: 26px 36px; }
 }
 
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
 /* === RESPONSIVE: Tablets portrait (768-1023px) === */
 @media (min-width: 768px) and (max-width: 1023px) {
   body { padding: 36px 20px 72px; }
   .cover { padding: 56px 48px; }
   .content { padding: 42px 48px; }
   .footer { padding: 28px 48px; }
+}
+
+
+/* === APP INTERACTIVE STYLES === */
+
+/* TOC clickable links */
+.toc ol li a { color: var(--text-primary); text-decoration: none; display: block; transition: color 0.2s, padding-left 0.2s; }
+.toc ol li a:hover, .toc ol li a:active { color: var(--light-blue); padding-left: 4px; }
+
+/* Reading progress bar */
+.progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--mid-blue), var(--light-blue)); z-index: 1000; transition: width 0.1s linear; }
+
+/* Bottom sheet navigation */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; z-index: 950; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 75vh; display: flex; flex-direction: column; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet-handle { width: 36px; height: 4px; background: rgba(129,173,243,0.25); border-radius: 2px; margin: 12px auto 8px; flex-shrink: 0; }
+.bottom-sheet-title { padding: 0 24px 12px; font-size: 13px; font-weight: 700; color: var(--light-blue); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+.bottom-sheet-list { overflow-y: auto; padding: 8px 16px 24px; flex: 1; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.bottom-sheet-list a { display: flex; align-items: center; gap: 12px; padding: 14px 12px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.15s; }
+.bottom-sheet-list a:active { background: rgba(129,173,243,0.08); }
+.bottom-sheet-list a .nav-num { color: var(--mid-blue); font-size: 11px; font-weight: 800; min-width: 24px; }
+.bottom-sheet-list a.active { color: var(--light-blue); background: rgba(129,173,243,0.06); }
+
+/* Floating nav button */
+.fab-nav { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: var(--mid-blue); border: 1px solid rgba(129,173,243,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(74,104,206,0.2); transition: transform 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-nav:active { transform: scale(0.92); }
+.fab-nav svg { width: 22px; height: 22px; }
+
+/* Back to top button */
+.fab-top { position: fixed; bottom: 24px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 800; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; -webkit-tap-highlight-color: transparent; }
+.fab-top.visible { opacity: 1; visibility: visible; }
+.fab-top:active { transform: scale(0.9); }
+.fab-top svg { width: 18px; height: 18px; }
+
+/* Section active indicator (current reading section) */
+.section-number .reading-badge { display: inline-block; background: rgba(129,173,243,0.12); border: 1px solid rgba(129,173,243,0.2); color: var(--light-blue); padding: 2px 8px; border-radius: 10px; font-size: 9px; margin-left: 8px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; vertical-align: middle; }
+.section.reading .section-number .reading-badge { opacity: 1; }
+
+/* Copy button on callouts */
+.copyable { position: relative; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; z-index: 5; -webkit-tap-highlight-color: transparent; }
+.copy-btn:active { background: var(--light-blue); color: var(--bg); border-color: var(--light-blue); }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Interactive checklists */
+.checklist.interactive li { cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.checklist.interactive li.checked { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.checklist.interactive li.checked::before { content: '\2713'; color: var(--green); }
+
+/* Safe area for FABs on notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fab-nav { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .fab-top { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .bottom-sheet-list { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 }
 
 /* === RESPONSIVE: Large tablets & desktops (1024px+) - already fine at default === */
@@ -513,28 +856,28 @@ bVxZ30X65gAAAABJRU5ErkJggg==" alt="Packsify">
 <div class="content">
 
 <div class="toc"><h2>What's Inside</h2><ol>
-<li>Mindset: You Earned the Right to Promote</li>
-<li>The Trust Layer: How to Educate and Build Real Belief</li>
-<li>Platform Strategy: YouTube + Kick + Discord</li>
-<li>The Revenue Math: Why Kick is a Better Deal for Creators</li>
-<li>Smart Platform Transition: Adding Kick Step by Step</li>
-<li>Consistency and Repetition: The Promotion Engine</li>
-<li>Show, Don't Speak: The Proof Moment</li>
-<li>Stream Setup: Making Packsify Visible</li>
-<li>Trigger Moments: When to Mention Packsify</li>
-<li>Stream Structure: Weekly Schedule and Format Templates</li>
-<li>Leverage Plays: Do More With Less Effort</li>
-<li>YouTube Channel Strategy: Main + Clips</li>
-<li>Trust Ladder: Different Messages for Different People</li>
-<li>Handling Competitor Questions With Facts</li>
-<li>Rewards, Giveaways, and Kick Commands</li>
-<li>Build Your Team: Mods, Clippers, and AI Tools</li>
-<li>Show Your Face: Why It Matters for Trust</li>
-<li>Quick Reference Checklists</li>
+<li><a href="#mindset">Mindset: You Earned the Right to Promote</a></li>
+<li><a href="#trust-layer">The Trust Layer: How to Educate and Build Real Belief</a></li>
+<li><a href="#platform-strategy">Platform Strategy: YouTube + Kick + Discord</a></li>
+<li><a href="#revenue-math">The Revenue Math: Why Kick is a Better Deal for Creators</a></li>
+<li><a href="#platform-transition">Smart Platform Transition: Adding Kick Step by Step</a></li>
+<li><a href="#consistency">Consistency and Repetition: The Promotion Engine</a></li>
+<li><a href="#proof-moment">Show, Don't Speak: The Proof Moment</a></li>
+<li><a href="#stream-setup">Stream Setup: Making Packsify Visible</a></li>
+<li><a href="#trigger-moments">Trigger Moments: When to Mention Packsify</a></li>
+<li><a href="#stream-structure">Stream Structure: Weekly Schedule and Format Templates</a></li>
+<li><a href="#leverage">Leverage Plays: Do More With Less Effort</a></li>
+<li><a href="#youtube-strategy">YouTube Channel Strategy: Main + Clips</a></li>
+<li><a href="#trust-ladder">Trust Ladder: Different Messages for Different People</a></li>
+<li><a href="#competitors">Handling Competitor Questions With Facts</a></li>
+<li><a href="#rewards">Rewards, Giveaways, and Kick Commands</a></li>
+<li><a href="#team">Build Your Team: Mods, Clippers, and AI Tools</a></li>
+<li><a href="#show-face">Show Your Face: Why It Matters for Trust</a></li>
+<li><a href="#checklists">Quick Reference Checklists</a></li>
 </ol></div>
 
 <!-- S1 -->
-<div class="section"><div class="section-number">Section 01</div><h2>Mindset: You Earned the Right to Promote</h2>
+<div class="section" id="mindset"><div class="section-number">Section 01</div><h2>Mindset: You Earned the Right to Promote</h2>
 <p>Let's get this out of the way first. If you are reading this, you already provide real value to your community. You share tips, strategies, event breakdowns, entertainment, and guidance that helps people play smarter and enjoy their games more. That's real work.</p>
 <p>Promoting Packsify is not "selling out." It is the opposite. You are pointing your community toward a service that genuinely saves them money, keeps their accounts safe, and gives them a better experience. You know this because you use it yourself.</p>
 <p>Every major content creator works with partners. That's how the creator economy works. The difference is whether you promote something you believe in or something you don't. You believe in this. So own it.</p>
@@ -543,7 +886,7 @@ bVxZ30X65gAAAABJRU5ErkJggg==" alt="Packsify">
 </div>
 
 <!-- S2: NEW - Trust Layer -->
-<div class="section"><div class="section-number">Section 02</div><h2>The Trust Layer: How to Educate and Build Real Belief</h2>
+<div class="section" id="trust-layer"><div class="section-number">Section 02</div><h2>The Trust Layer: How to Educate and Build Real Belief</h2>
 <p>This section might be the most important one in the entire playbook. The difference between a creator who drives 5 orders and one who drives 500 comes down to one thing: <strong>how well your audience understands why Packsify works.</strong></p>
 <p>A generic "use my code and save money" does not cut it. That's what every affiliate in every niche says. It tells nobody anything specific. Your audience needs to understand the same thing you understand. If every one of your viewers saw Packsify the way you see it, they would all use it for every purchase. Your job is to close that understanding gap.</p>
 
@@ -578,7 +921,7 @@ This explanation does more for trust than any slogan ever will. When people unde
 </div>
 
 <!-- S3 -->
-<div class="section"><div class="section-number">Section 03</div><h2>Platform Strategy: YouTube + Kick + Discord</h2>
+<div class="section" id="platform-strategy"><div class="section-number">Section 03</div><h2>Platform Strategy: YouTube + Kick + Discord</h2>
 <p>The smartest creators do not put all their effort into one platform. They build a system where each platform does a specific job.</p>
 <h3>YouTube = Discovery and Traffic</h3>
 <p>YouTube is the world's second-largest search engine. When someone searches "Evony KvK guide" or "Whiteout Survival tips," your video can show up for months or even years after you publish it. That is passive discovery no other platform can match. YouTube is where strangers find you.</p>
@@ -592,7 +935,7 @@ This explanation does more for trust than any slogan ever will. When people unde
 </div>
 
 <!-- S4: Revenue Math - UPDATED -->
-<div class="section"><div class="section-number">Section 04</div><h2>The Revenue Math: Why Kick is a Better Deal for Creators</h2>
+<div class="section" id="revenue-math"><div class="section-number">Section 04</div><h2>The Revenue Math: Why Kick is a Better Deal for Creators</h2>
 <p>This is not opinion. This is math. And the math strongly favors Kick for livestreaming, especially if your audience is outside the US.</p>
 
 <h3>The Subscription Split</h3>
@@ -618,7 +961,7 @@ This explanation does more for trust than any slogan ever will. When people unde
 </div>
 
 <!-- S5: Transition - UPDATED for small creators -->
-<div class="section"><div class="section-number">Section 05</div><h2>Smart Platform Transition: Adding Kick Step by Step</h2>
+<div class="section" id="platform-transition"><div class="section-number">Section 05</div><h2>Smart Platform Transition: Adding Kick Step by Step</h2>
 <p>You don't need to abandon YouTube. And if you currently have 100-200 viewers on YouTube streams, you do not need to rush this. The goal is to gradually add Kick as a second home for livestreaming while keeping YouTube for videos and discovery.</p>
 
 <h3>Phase 1: Test the Waters (Week 1-4)</h3>
@@ -640,7 +983,7 @@ You do not need thousands of viewers to make Kick worthwhile. Even 30-50 active 
 </div>
 
 <!-- S6: Repetition - UPDATED -->
-<div class="section"><div class="section-number">Section 06</div><h2>Consistency and Repetition: The Promotion Engine</h2>
+<div class="section" id="consistency"><div class="section-number">Section 06</div><h2>Consistency and Repetition: The Promotion Engine</h2>
 <p>This is the single most important operational section of this playbook. If you take one thing away: <strong>you need to repeat your Packsify message far more often than you think, and you need to show the product, not just talk about it.</strong></p>
 <p>The best content creators in every niche mention their partners constantly. They weave it into the fabric of their content so naturally that it becomes part of their identity.</p>
 <p>Our data shows that many first-time customers placed their order about 10 days after they first heard about us, usually after being reminded through another video or stream. That means every mention matters, even if someone has heard it before.</p>
@@ -655,7 +998,7 @@ You do not need thousands of viewers to make Kick worthwhile. Even 30-50 active 
 
 <h3>Create Your Slogan and Stick With It</h3>
 <p>Pick a short, memorable phrase and use it every single time. Here are examples aligned with what mobile strategy game players actually care about:</p>
-<div class="callout yellow"><div class="callout-title">Slogan Examples for Mobile Strategy Creators</div>
+<div class="callout yellow copyable"><div class="callout-title">Slogan Examples for Mobile Strategy Creators</div>
 "Save on packs and support the channel. Code [YOUR CODE]. Link below."<br><br>
 "Smart commanders save with Packsify. Code [YOUR CODE]."<br><br>
 "Same packs, better price, zero bans. Packsify, code [YOUR CODE]."<br><br>
@@ -682,7 +1025,7 @@ The biggest mistake creators make is only talking about Packsify without showing
 </div>
 
 <!-- S7: Proof Moment - EXPANDED -->
-<div class="section"><div class="section-number">Section 07</div><h2>Show, Don't Speak: The Proof Moment</h2>
+<div class="section" id="proof-moment"><div class="section-number">Section 07</div><h2>Show, Don't Speak: The Proof Moment</h2>
 <p>Showing is roughly 10x more effective than telling. When viewers see you actually use Packsify, trust goes through the roof. This is not just a tip. It is the core strategy.</p>
 
 <h3>Proof Moment Formats</h3>
@@ -702,7 +1045,7 @@ Mentioning specific people by name (Stefan the CEO, Sara the COO, your account m
 
 
 <!-- S8: Stream Setup -->
-<div class="section"><div class="section-number">Section 08</div><h2>Stream Setup: Making Packsify Visible</h2>
+<div class="section" id="stream-setup"><div class="section-number">Section 08</div><h2>Stream Setup: Making Packsify Visible</h2>
 <p>The most successful streamers always have their partner's branding visible on screen. For us, the challenge is that Packsify is not a game you play on screen. So we need to be intentional about visibility.</p>
 <h3>Persistent Overlay Banner</h3>
 <p>Add a small, clean banner to your stream overlay that stays visible at all times. It should include: the Packsify name or logo, your creator code, and either a short URL or QR code. Position it in a corner or along the bottom. Anyone who clips your stream or glances at the screen should see it.</p>
@@ -711,7 +1054,7 @@ Mentioning specific people by name (Stefan the CEO, Sara the COO, your account m
 <h3>Chat Commands (Kick Setup Guide)</h3>
 <p>If you have never used Kick before, here is how to set up chat commands. You have three options:</p>
 <p><strong>Option 1: KickBot (recommended for beginners).</strong> Go to kickbot.app and create an account. Connect it to your Kick channel. Navigate to "Custom Commands" and create these:</p>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li><strong>!packs</strong> Response: "Save on packs with Packsify! Use code [YOUR CODE] at packsify.com. 5 years, zero bans. Your account stays safe."</li>
 <li><strong>!code</strong> Response: "My Packsify code is [YOUR CODE]. Use it at packsify.com to save on packs and support this channel."</li>
 <li><strong>!save</strong> Response: "Smart commanders save with Packsify. Code [YOUR CODE] at packsify.com"</li>
@@ -727,7 +1070,7 @@ In everything you do, position Packsify as your trusted partner, not as a sponso
 </div>
 
 <!-- S9: Trigger Moments -->
-<div class="section"><div class="section-number">Section 09</div><h2>Trigger Moments: When to Mention Packsify</h2>
+<div class="section" id="trigger-moments"><div class="section-number">Section 09</div><h2>Trigger Moments: When to Mention Packsify</h2>
 <p>Not all mentions are equal. There are specific moments where a Packsify mention lands 10x harder because emotions are high and the need is real.</p>
 <p><strong>Right before a major event (KvK, SvS, Kill Event):</strong> "If you're spending for this event, don't go in blind. Check Packsify first, save real money, code [YOUR CODE]."</p>
 <p><strong>Right after buying packs yourself:</strong> "I just topped up for this event through Packsify. Took about 10 minutes. Done. Now let's go."</p>
@@ -741,7 +1084,7 @@ In everything you do, position Packsify as your trusted partner, not as a sponso
 </div>
 
 <!-- S10: NEW - Stream Structure -->
-<div class="section"><div class="section-number">Section 10</div><h2>Stream Structure: Weekly Schedule and Format Templates</h2>
+<div class="section" id="stream-structure"><div class="section-number">Section 10</div><h2>Stream Structure: Weekly Schedule and Format Templates</h2>
 <p>Having a consistent schedule and structure helps your audience know what to expect. It also makes it much easier to plan your Packsify mentions, giveaways, and content clipping. Here are some templates you can adapt.</p>
 
 <h3>Sample Weekly Schedule</h3>
@@ -767,11 +1110,11 @@ When your audience knows what to expect on each day, they plan around your sched
 </div>
 
 <!-- S11: Leverage - UPDATED -->
-<div class="section"><div class="section-number">Section 11</div><h2>Leverage Plays: Do More With Less Effort</h2>
+<div class="section" id="leverage"><div class="section-number">Section 11</div><h2>Leverage Plays: Do More With Less Effort</h2>
 <p>The word "leverage" means getting more output from less input. Some of these things look hard when you first try them. But once you get into the flow and make them natural, they save massive time and multiply your results.</p>
 
 <h3>One Stream = Five Pieces of Content</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>1 YouTube highlight video (8-15 minutes of the best moments)</li>
 <li>3 short clips for TikTok, YouTube Shorts, and Instagram Reels</li>
 <li>1-2 Discord posts (screenshot, quote, highlight moment)</li>
@@ -788,7 +1131,7 @@ When your audience knows what to expect on each day, they plan around your sched
 </div>
 
 <!-- S12: NEW - YouTube Channels -->
-<div class="section"><div class="section-number">Section 12</div><h2>YouTube Channel Strategy: Main + Clips</h2>
+<div class="section" id="youtube-strategy"><div class="section-number">Section 12</div><h2>YouTube Channel Strategy: Main + Clips</h2>
 <p>Many successful creators run two separate YouTube channels, and there is a good reason for it.</p>
 <h3>Your Main Channel</h3>
 <p>This is your polished, edited content: strategy guides, event previews, tutorials, deep dives. These videos are searchable, evergreen, and bring in new viewers through YouTube's algorithm for months or years. This is your discovery engine.</p>
@@ -802,7 +1145,7 @@ Your clips channel is the perfect place for Packsify content: a 60-second clip o
 </div>
 
 <!-- S13: Trust Ladder -->
-<div class="section"><div class="section-number">Section 13</div><h2>Trust Ladder: Different Messages for Different People</h2>
+<div class="section" id="trust-ladder"><div class="section-number">Section 13</div><h2>Trust Ladder: Different Messages for Different People</h2>
 <p>Not everyone needs the same message. But here is a key insight: <strong>we suggest defaulting to the "Stranger" level of explanation even for your regulars.</strong> Why? Because even long-time viewers may not fully understand how Packsify works. And new viewers are joining all the time. If you always explain as if someone is hearing about it for the first time, everyone benefits.</p>
 <div class="table-wrap"><table><thead><tr><th>Stage</th><th>Who</th><th>What They Need</th><th>Example</th></tr></thead><tbody>
 <tr><td><strong>Stranger</strong></td><td>First time watching</td><td>Full explanation of what Packsify is and why it is safe</td><td>"Let me show you how this works..." [screen share]</td></tr>
@@ -815,7 +1158,7 @@ Your clips channel is the perfect place for Packsify content: a 60-second clip o
 </div>
 
 <!-- S14: Competitors - UPDATED -->
-<div class="section"><div class="section-number">Section 14</div><h2>Handling Competitor Questions With Facts</h2>
+<div class="section" id="competitors"><div class="section-number">Section 14</div><h2>Handling Competitor Questions With Facts</h2>
 <p>People will ask "Why Packsify and not [other service]?" The answer is never to trash the competition. The answer is to share facts and let the comparison speak for itself.</p>
 
 <h3>Facts That Win Without Naming Names</h3>
@@ -831,13 +1174,13 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 </div>
 
 <!-- S15: Rewards + Kick Commands - EXPANDED -->
-<div class="section"><div class="section-number">Section 15</div><h2>Rewards, Giveaways, and Kick Commands</h2>
+<div class="section" id="rewards"><div class="section-number">Section 15</div><h2>Rewards, Giveaways, and Kick Commands</h2>
 
 <h3>The Order-Linked Giveaway</h3>
 <p>"Use code [YOUR CODE] on Packsify this week, screenshot your order, post it in the Discord giveaway channel, and you're entered to win bonus packs." This creates a loop where the giveaway itself generates orders.</p>
 
 <h3>Stream Rewards</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>Early arrival bonus: first 50 viewers get entered into a Packsify credit giveaway</li>
 <li>End-of-stream reward: viewers who stayed the whole stream get a chance at free packs</li>
 <li>Monthly top fans: reward your most active community members with Packsify credits</li>
@@ -852,14 +1195,14 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 </div>
 
 <!-- S16: Team - UPDATED -->
-<div class="section"><div class="section-number">Section 16</div><h2>Build Your Team: Mods, Clippers, and AI Tools</h2>
+<div class="section" id="team"><div class="section-number">Section 16</div><h2>Build Your Team: Mods, Clippers, and AI Tools</h2>
 <p>You don't need a professional team. You need 1-2 people who already watch your streams and want to help. The same person can be both a mod and a clipper.</p>
 
 <h3>Where to Find Them</h3>
 <p>Your best mods are people who already show up consistently. They are in your chat every stream. They already answer other viewers' questions. They care about your community. These people often volunteer naturally. If they don't, ask directly in Discord: "I'm looking for someone who wants to help moderate streams and clip highlights. If you're interested, send me a DM." Most people will do it for free at the start because they enjoy being part of the team. You can reward them later with Packsify credits, shoutouts, or other recognition. Be open about looking for help. People want to contribute.</p>
 
 <h3>What They Do</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li><strong>During stream:</strong> Moderate chat, drop !packs command when someone mentions buying, share the proof clip when someone asks "is it safe?", clip interesting moments</li>
 <li><strong>After stream:</strong> Export clips, add captions using AI tools (CapCut, Opus Clip, Descript), post to your Shorts/TikTok, update Discord with highlights</li>
 </ul>
@@ -869,7 +1212,7 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 </div>
 
 <!-- S17: NEW - Face on Camera -->
-<div class="section"><div class="section-number">Section 17</div><h2>Show Your Face: Why It Matters for Trust</h2>
+<div class="section" id="show-face"><div class="section-number">Section 17</div><h2>Show Your Face: Why It Matters for Trust</h2>
 <p>This might be uncomfortable for some creators, but it is important: <strong>showing your face on camera is one of the single biggest trust accelerators you can use.</strong></p>
 <p>Think about it from your viewer's perspective. They are deciding whether to trust Packsify with their game account and their money. If they see a faceless stream with just gameplay and a voice, the trust bar is low. If they see your face reacting, talking, and personally vouching for Packsify, the trust bar goes way up.</p>
 <p>Top creators across every niche show their face. It makes your content more engaging, more personal, and more memorable. When you show your face and say "I personally use Packsify and I trust them," it carries more weight than the same words from a faceless voiceover.</p>
@@ -877,9 +1220,9 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 </div>
 
 <!-- S18: Checklists -->
-<div class="section"><div class="section-number">Section 18</div><h2>Quick Reference Checklists</h2>
+<div class="section" id="checklists"><div class="section-number">Section 18</div><h2>Quick Reference Checklists</h2>
 <h3>Before Every Stream</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>Packsify overlay/banner is visible on all scenes</li>
 <li>Bot commands (!packs, !code, !enter) are active and tested</li>
 <li>Timed bot message set for every 15-20 minutes</li>
@@ -888,7 +1231,7 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 <li>Giveaway or reward is set up if running one</li>
 </ul>
 <h3>During Every Stream</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>First Packsify mention within 5 minutes</li>
 <li>Mention every 15-20 minutes using different delivery styles</li>
 <li>At least one Proof Moment per stream (show the app, an order, or the team chat)</li>
@@ -897,7 +1240,7 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 <li>Clipper is capturing key moments including Packsify content</li>
 </ul>
 <h3>After Every Stream</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>Review clips and approve for posting</li>
 <li>Post highlight to main YouTube channel within 24 hours</li>
 <li>Post 1-3 clips to YouTube Clips channel / TikTok / Shorts</li>
@@ -905,7 +1248,7 @@ You do not need to mention competitors by name. Ever. Just keep repeating the fa
 <li>Check Packsify dashboard for new orders from your code</li>
 </ul>
 <h3>Weekly</h3>
-<ul class="checklist">
+<ul class="checklist interactive">
 <li>Review which Packsify mentions got the best chat response</li>
 <li>Update your proof moment if the current one feels stale</li>
 <li>Check in with your mod/clipper team</li>
@@ -1041,5 +1384,187 @@ iWA2diyU28/2je3bN5gNAGPHjlX219yEQj//KcVf5F8oZID/k7zAxxqG8kvE/htJNARB/82fmfwi
   For Packsify Alliance Creators Only
 </div>
 </div>
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Bottom Sheet Navigation -->
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="bottom-sheet" id="bottomSheet">
+  <div class="bottom-sheet-handle"></div>
+  <div class="bottom-sheet-title">Chapters</div>
+  <div class="bottom-sheet-list" id="navList">
+    <a href="#mindset" data-section="mindset"><span class="nav-num">01</span>Mindset</a>
+    <a href="#trust-layer" data-section="trust-layer"><span class="nav-num">02</span>The Trust Layer</a>
+    <a href="#platform-strategy" data-section="platform-strategy"><span class="nav-num">03</span>Platform Strategy</a>
+    <a href="#revenue-math" data-section="revenue-math"><span class="nav-num">04</span>Revenue Math</a>
+    <a href="#platform-transition" data-section="platform-transition"><span class="nav-num">05</span>Platform Transition</a>
+    <a href="#consistency" data-section="consistency"><span class="nav-num">06</span>Consistency & Repetition</a>
+    <a href="#proof-moment" data-section="proof-moment"><span class="nav-num">07</span>Show, Don't Speak</a>
+    <a href="#stream-setup" data-section="stream-setup"><span class="nav-num">08</span>Stream Setup</a>
+    <a href="#trigger-moments" data-section="trigger-moments"><span class="nav-num">09</span>Trigger Moments</a>
+    <a href="#stream-structure" data-section="stream-structure"><span class="nav-num">10</span>Stream Structure</a>
+    <a href="#leverage" data-section="leverage"><span class="nav-num">11</span>Leverage Plays</a>
+    <a href="#youtube-strategy" data-section="youtube-strategy"><span class="nav-num">12</span>YouTube Strategy</a>
+    <a href="#trust-ladder" data-section="trust-ladder"><span class="nav-num">13</span>Trust Ladder</a>
+    <a href="#competitors" data-section="competitors"><span class="nav-num">14</span>Handling Competitors</a>
+    <a href="#rewards" data-section="rewards"><span class="nav-num">15</span>Rewards & Giveaways</a>
+    <a href="#team" data-section="team"><span class="nav-num">16</span>Build Your Team</a>
+    <a href="#show-face" data-section="show-face"><span class="nav-num">17</span>Show Your Face</a>
+    <a href="#checklists" data-section="checklists"><span class="nav-num">18</span>Checklists</a>
+  </div>
+</div>
+
+<!-- Floating Action Buttons -->
+<button class="fab-nav" id="fabNav" aria-label="Open navigation">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<button class="fab-top" id="fabTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+(function() {
+  // === Bottom Sheet Navigation ===
+  const fab = document.getElementById('fabNav');
+  const sheet = document.getElementById('bottomSheet');
+  const overlay = document.getElementById('navOverlay');
+  const navLinks = document.querySelectorAll('#navList a');
+  
+  function openSheet() { sheet.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeSheet() { sheet.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+  
+  fab.addEventListener('click', openSheet);
+  overlay.addEventListener('click', closeSheet);
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      closeSheet();
+      // Small delay so sheet closes before scroll
+      setTimeout(() => {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      e.preventDefault();
+    });
+  });
+
+  // === TOC smooth scroll ===
+  document.querySelectorAll('.toc a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // === Reading Progress Bar ===
+  const progressBar = document.getElementById('progressBar');
+  const fabTop = document.getElementById('fabTop');
+  
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+    
+    // Show/hide back-to-top
+    if (scrollTop > 600) { fabTop.classList.add('visible'); }
+    else { fabTop.classList.remove('visible'); }
+  }
+  
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // === Back to Top ===
+  fabTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // === Active Section Tracking ===
+  const sections = document.querySelectorAll('.section[id]');
+  let currentSection = null;
+  
+  function updateActiveSection() {
+    const scrollPos = window.scrollY + 150;
+    let active = null;
+    
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollPos) active = sec.id;
+    });
+    
+    if (active !== currentSection) {
+      currentSection = active;
+      // Update bottom sheet
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.dataset.section === active);
+      });
+      // Update reading badge
+      sections.forEach(sec => {
+        sec.classList.toggle('reading', sec.id === active);
+      });
+    }
+  }
+  
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
+  updateActiveSection();
+
+  // === Copy Button on Copyable Callouts ===
+  document.querySelectorAll('.copyable').forEach(callout => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function() {
+      // Get text content, clean it up
+      const title = callout.querySelector('.callout-title');
+      let text = callout.textContent;
+      if (title) text = text.replace(title.textContent, '').replace('Copy', '');
+      text = text.trim().replace(/\n{3,}/g, '\n\n');
+      
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    });
+    callout.appendChild(btn);
+  });
+
+  // === Interactive Checklists ===
+  const STORAGE_KEY = 'packsify-playbook-checks';
+  let checked = {};
+  try { checked = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) {}
+  
+  document.querySelectorAll('.checklist.interactive li').forEach((li, i) => {
+    const key = 'check-' + i;
+    if (checked[key]) li.classList.add('checked');
+    
+    li.addEventListener('click', function() {
+      this.classList.toggle('checked');
+      checked[key] = this.classList.contains('checked');
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); } catch(e) {}
+    });
+  });
+
+  // === Swipe down to close bottom sheet ===
+  let touchStartY = 0;
+  sheet.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  sheet.addEventListener('touchmove', function(e) {
+    const dy = e.touches[0].clientY - touchStartY;
+    if (dy > 80) closeSheet();
+  }, { passive: true });
+})();
+</script>
+
 </body>
 </html>
